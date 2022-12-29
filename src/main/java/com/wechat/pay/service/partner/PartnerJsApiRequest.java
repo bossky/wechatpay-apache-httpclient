@@ -55,7 +55,7 @@ public class PartnerJsApiRequest {
      * true：是
      * false：否
      */
-    protected boolean supportFapiao;
+    protected Boolean supportFapiao;
     /**
      * 结算信息
      */
@@ -150,11 +150,11 @@ public class PartnerJsApiRequest {
         this.goodsTag = goodsTag;
     }
 
-    public boolean isSupportFapiao() {
+    public Boolean isSupportFapiao() {
         return supportFapiao;
     }
 
-    public void setSupportFapiao(boolean supportFapiao) {
+    public void setSupportFapiao(Boolean supportFapiao) {
         this.supportFapiao = supportFapiao;
     }
 
