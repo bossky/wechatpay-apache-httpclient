@@ -20,96 +20,97 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class WechatPayV2service extends WechatPayService {
 
-    protected static final Logger _Logger = LoggerFactory.getLogger(WechatPayV2service.class);
+	protected static final Logger _Logger = LoggerFactory.getLogger(WechatPayV2service.class);
 
-    protected String merchantId;
+	protected String merchantId;
 
-    protected String apiV2Key;
+	protected String apiV2Key;
 
-    protected static XmlMapper MAPPER;
+	protected static XmlMapper MAPPER;
 
-    static {
-        MAPPER = new XmlMapper();
-        MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-        MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
+	static {
+		MAPPER = new XmlMapper();
+		MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+		MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+	}
 
-    public WechatPayV2service() {
-        super(10, 10);
-    }
+	public WechatPayV2service() {
+		super(10, 10);
+	}
 
-    public String getMerchantId() {
-        return merchantId;
-    }
+	public String getMerchantId() {
+		return merchantId;
+	}
 
-    public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
-    }
+	public void setMerchantId(String merchantId) {
+		this.merchantId = merchantId;
+	}
 
-    public String getApiV2Key() {
-        return apiV2Key;
-    }
+	public String getApiV2Key() {
+		return apiV2Key;
+	}
 
-    public void setApiV2Key(String apiV2Key) {
-        this.apiV2Key = apiV2Key;
-    }
+	public void setApiV2Key(String apiV2Key) {
+		this.apiV2Key = apiV2Key;
+	}
 
-    protected String toString(Object request) {
-        if (null == request) {
-            return null;
-        }
-        try {
-            return MAPPER.writeValueAsString(request);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	protected String toString(Object request) {
+		if (null == request) {
+			return null;
+		}
+		try {
+			return MAPPER.writeValueAsString(request).replaceAll(request.getClass().getSimpleName(), "xml");
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    protected <E> E fromString(String result, Class<E> clazz) {
-        if (null == result) {
-            return null;
-        }
-        try {
-            return MAPPER.readValue(result, clazz);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	protected <E> E fromString(String result, Class<E> clazz) {
+		if (null == result) {
+			return null;
+		}
+		try {
+			return MAPPER.readValue(result, clazz);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    protected String doExe(URI uri, String content) throws IOException, WechatApiException {
-        HttpPost post = new HttpPost(uri);
-        post.setHeader("Content-Type", "text/html; charset=UTF-8");
-        post.setEntity(new ByteArrayEntity(content.getBytes(StandardCharsets.UTF_8)));
-        try (CloseableHttpResponse response = getClient().execute(post)) {
-            StatusLine status = response.getStatusLine();
-            if (status.getStatusCode() / 100 != 2) {
-                _Logger.warn("HTTP响应异常：" + response.getStatusLine());
-            }
-            WechatApiV2Exception exception = fromString(EntityUtils.toString(response.getEntity()), WechatApiV2Exception.class);
-            if (!"SUCCESS".equals(exception.getCode())) {
-                throw exception;
-            }
-            if (null != exception.getErrCode() || exception.getErrCode().length() > 0) {
-                throw exception;
-            }
-            return EntityUtils.toString(response.getEntity());
-        }
-    }
+	protected String doExe(URI uri, String content) throws IOException, WechatApiException {
+		HttpPost post = new HttpPost(uri);
+		post.setHeader("Content-Type", "text/html; charset=UTF-8");
+		post.setEntity(new ByteArrayEntity(content.getBytes(StandardCharsets.UTF_8)));
+		try (CloseableHttpResponse response = getClient().execute(post)) {
+			StatusLine status = response.getStatusLine();
+			if (status.getStatusCode() / 100 != 2) {
+				_Logger.warn("HTTP响应异常：" + response.getStatusLine());
+			}
+			String result = EntityUtils.toString(response.getEntity(), "UTF-8");
+			WechatApiV2Exception exception = fromString(result, WechatApiV2Exception.class);
+			if (!"SUCCESS".equals(exception.getCode())) {
+				throw exception;
+			}
+			if (null != exception.getErrCode() || exception.getErrCode().length() > 0) {
+				throw exception;
+			}
+			return result;
+		}
+	}
 
-    @Override
-    protected HttpClientBuilder createBuilder() {
-        return HttpClientBuilder.create();
-    }
+	@Override
+	protected HttpClientBuilder createBuilder() {
+		return HttpClientBuilder.create();
+	}
 
-    protected String sign(SignType signType, String content) {
-        switch (signType) {
-            case MD5:
-                return SignUtil.md5(content).toUpperCase();
-            case HMAC_SHA256:
-                return SignUtil.HMACSHA256(content, apiV2Key).toUpperCase();
-            default:
-                throw new IllegalArgumentException("不支持的签名方式" + signType);
-        }
-    }
+	protected String sign(SignType signType, String content) {
+		switch (signType) {
+		case MD5:
+			return SignUtil.md5(content).toUpperCase();
+		case HMAC_SHA256:
+			return SignUtil.HMACSHA256(content, apiV2Key).toUpperCase();
+		default:
+			throw new IllegalArgumentException("不支持的签名方式" + signType);
+		}
+	}
 
 }

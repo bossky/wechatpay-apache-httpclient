@@ -9,7 +9,7 @@ import com.wechat.pay.service.WechatPayV3service;
 
 public class WechatPayV3CombineService extends WechatPayV3service {
 
-    public static String TRANSACTIONS_PATH = "/v3/pay/combine-transactions/";
+    public static String TRANSACTIONS_PATH = "/v3/combine-transactions/";
 
     /**
      * jsapi支付
