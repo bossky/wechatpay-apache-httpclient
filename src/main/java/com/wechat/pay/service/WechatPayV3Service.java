@@ -224,10 +224,9 @@ public class WechatPayV3Service extends WechatPayService {
      * @throws ParseException      解析错误
      */
     public Notification parse(String wechatPaySerial, String nonce, String timestamp, String signature, String body) throws ValidationException, ParseException {
-        getClient();//触发初始化
         NotificationRequest request = new NotificationRequest.Builder().withSerialNumber(wechatPaySerial).withNonce(nonce).withTimestamp(timestamp).withSignature(signature).withBody(body).build();
         // 验签和解析请求体
-        return handler.parse(request);
+        return getNotificationHandler().parse(request);
     }
 
 
