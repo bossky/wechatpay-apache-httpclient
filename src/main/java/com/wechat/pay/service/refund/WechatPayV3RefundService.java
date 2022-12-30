@@ -6,9 +6,9 @@ import java.io.IOException;
 import com.wechat.pay.contrib.apache.httpclient.exception.ParseException;
 import com.wechat.pay.contrib.apache.httpclient.exception.ValidationException;
 import com.wechat.pay.service.WechatApiException;
-import com.wechat.pay.service.WechatPayV3service;
+import com.wechat.pay.service.WechatPayV3Service;
 
-public class WechatPayV3RefundService extends WechatPayV3service {
+public class WechatPayV3RefundService extends WechatPayV3Service {
 
     public static String REFUND_PATH = "/v3/refund/domestic/";
 

@@ -5,6 +5,8 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.http.HttpHeaders;
 import org.apache.http.StatusLine;
@@ -37,70 +39,113 @@ import com.wechat.pay.contrib.apache.httpclient.notification.NotificationHandler
 import com.wechat.pay.contrib.apache.httpclient.notification.NotificationRequest;
 import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
 
-public class WechatPayV3service extends WechatPayService {
+public class WechatPayV3Service extends WechatPayService {
 
-    protected static final Logger _Logger = LoggerFactory.getLogger(WechatPayV3service.class);
+    protected static final Logger _Logger = LoggerFactory.getLogger(WechatPayV3Service.class);
 
     protected String merchantId;
     protected String merchantSerialNumber;
 
     protected String merchantPrivateKey;
     protected String apiV3Key;
+    protected PrivateKey merchantPrivateKeyObject;
     protected NotificationHandler handler;
+
+    protected Verifier verifier;
+
     protected static ObjectMapper MAPPER;
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
     static {
         MAPPER = new ObjectMapper();
+        MAPPER.setDateFormat(FORMAT);
         MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
-    public WechatPayV3service() {
-        super(10, 10);
+    public WechatPayV3Service() {
+        super();
+    }
+
+    public WechatPayV3Service(int connectionSecond, int soSecond) {
+        super(connectionSecond, soSecond);
+    }
+
+    public String getMerchantId() {
+        return merchantId;
     }
 
 
-    public String getMerchantId() {
-		return merchantId;
-	}
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
 
 
-	public void setMerchantId(String merchantId) {
-		this.merchantId = merchantId;
-	}
+    public String getMerchantSerialNumber() {
+        return merchantSerialNumber;
+    }
 
 
-	public String getMerchantSerialNumber() {
-		return merchantSerialNumber;
-	}
+    public void setMerchantSerialNumber(String merchantSerialNumber) {
+        this.merchantSerialNumber = merchantSerialNumber;
+    }
 
 
-	public void setMerchantSerialNumber(String merchantSerialNumber) {
-		this.merchantSerialNumber = merchantSerialNumber;
-	}
+    public String getMerchantPrivateKey() {
+        return merchantPrivateKey;
+    }
 
 
-	public String getMerchantPrivateKey() {
-		return merchantPrivateKey;
-	}
+    public void setMerchantPrivateKey(String merchantPrivateKey) {
+        this.merchantPrivateKey = merchantPrivateKey;
+    }
 
 
-	public void setMerchantPrivateKey(String merchantPrivateKey) {
-		this.merchantPrivateKey = merchantPrivateKey;
-	}
+    public String getApiV3Key() {
+        return apiV3Key;
+    }
 
 
-	public String getApiV3Key() {
-		return apiV3Key;
-	}
+    public void setApiV3Key(String apiV3Key) {
+        this.apiV3Key = apiV3Key;
+    }
+
+    public PrivateKey getPrivateKeyObject() {
+        if (null == merchantPrivateKeyObject) {
+            merchantPrivateKeyObject = PemUtil.loadPrivateKey(merchantPrivateKey);
+        }
+        return merchantPrivateKeyObject;
+    }
+
+    public Verifier getVerifier() {
+        if (null == verifier) {
+            //获取证书管理器实例
+            CertificatesManager certificatesManager = CertificatesManager.getInstance();
+            // 向证书管理器增加需要自动更新平台证书的商户信息
+            try {
+                certificatesManager.putMerchant(merchantId, new WechatPay2Credentials(getMerchantId(), new PrivateKeySigner(getMerchantSerialNumber(), getPrivateKeyObject())), getApiV3Key().getBytes(StandardCharsets.UTF_8));
+            } catch (IOException | GeneralSecurityException | HttpCodeException e) {
+                throw new RuntimeException(e);
+            }
+            // 从证书管理器中获取verifier
+            try {
+                verifier = certificatesManager.getVerifier(getMerchantId());
+            } catch (NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return verifier;
+    }
+
+    public NotificationHandler getNotificationHandler() {
+        if (null == handler) {
+            handler = new NotificationHandler(getVerifier(), getApiV3Key().getBytes(StandardCharsets.UTF_8));
+        }
+        return handler;
+    }
 
 
-	public void setApiV3Key(String apiV3Key) {
-		this.apiV3Key = apiV3Key;
-	}
-
-
-	protected String toString(Object request) {
+    protected String toString(Object request) {
         if (null == request) {
             return null;
         }
@@ -144,24 +189,7 @@ public class WechatPayV3service extends WechatPayService {
 
     @Override
     protected HttpClientBuilder createBuilder() {
-        PrivateKey privateKey = PemUtil.loadPrivateKey(merchantPrivateKey);
-        //获取证书管理器实例
-        CertificatesManager certificatesManager = CertificatesManager.getInstance();
-        // 向证书管理器增加需要自动更新平台证书的商户信息
-        try {
-            certificatesManager.putMerchant(merchantId, new WechatPay2Credentials(merchantId, new PrivateKeySigner(merchantSerialNumber, privateKey)), apiV3Key.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException | GeneralSecurityException | HttpCodeException e) {
-            throw new RuntimeException(e);
-        }
-        // 从证书管理器中获取verifier
-        Verifier verifier;
-        try {
-            verifier = certificatesManager.getVerifier(merchantId);
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        handler = new NotificationHandler(verifier, apiV3Key.getBytes(StandardCharsets.UTF_8));
-        return WechatPayHttpClientBuilder.create().withMerchant(merchantId, merchantSerialNumber, privateKey).withValidator(new WechatPay2Validator(verifier));
+        return WechatPayHttpClientBuilder.create().withMerchant(getMerchantId(), getMerchantSerialNumber(), getPrivateKeyObject()).withValidator(new WechatPay2Validator(getVerifier()));
     }
 
     /**
@@ -200,5 +228,41 @@ public class WechatPayV3service extends WechatPayService {
         NotificationRequest request = new NotificationRequest.Builder().withSerialNumber(wechatPaySerial).withNonce(nonce).withTimestamp(timestamp).withSignature(signature).withBody(body).build();
         // 验签和解析请求体
         return handler.parse(request);
+    }
+
+
+    /**
+     * 格式化时间
+     *
+     * @param date 时间
+     * @return 格式化后
+     */
+    public static String formatDate(Date date) {
+        if (null == date) {
+            return null;
+        }
+        synchronized (FORMAT) {
+            return FORMAT.format(date);
+        }
+    }
+
+    /**
+     * 解析时间
+     *
+     * @param str 字符串
+     * @return 时间
+     */
+    public static Date parseDate(String str) {
+        if (null == str) {
+            return null;
+        }
+        synchronized (FORMAT) {
+            try {
+                return FORMAT.parse(str);
+            } catch (java.text.ParseException e) {
+                _Logger.info("格式错误,{}", str, e);
+                return null;
+            }
+        }
     }
 }

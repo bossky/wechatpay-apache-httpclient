@@ -3,6 +3,9 @@ package com.wechat.pay.service;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -18,24 +21,31 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
-public class WechatPayV2service extends WechatPayService {
+public class WechatPayV2Service extends WechatPayService {
 
-	protected static final Logger _Logger = LoggerFactory.getLogger(WechatPayV2service.class);
+	protected static final Logger _Logger = LoggerFactory.getLogger(WechatPayV2Service.class);
 
 	protected String merchantId;
 
 	protected String apiV2Key;
 
 	protected static XmlMapper MAPPER;
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	static {
 		MAPPER = new XmlMapper();
+		MAPPER.setDateFormat(FORMAT);
 		MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 		MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 	}
 
-	public WechatPayV2service() {
-		super(10, 10);
+
+	public WechatPayV2Service() {
+		super();
+	}
+
+	public WechatPayV2Service(int connectionSecond, int soSecond) {
+		super(connectionSecond, soSecond);
 	}
 
 	public String getMerchantId() {
@@ -54,6 +64,7 @@ public class WechatPayV2service extends WechatPayService {
 		this.apiV2Key = apiV2Key;
 	}
 
+	@Override
 	protected String toString(Object request) {
 		if (null == request) {
 			return null;
@@ -65,6 +76,7 @@ public class WechatPayV2service extends WechatPayService {
 		}
 	}
 
+	@Override
 	protected <E> E fromString(String result, Class<E> clazz) {
 		if (null == result) {
 			return null;
@@ -76,6 +88,7 @@ public class WechatPayV2service extends WechatPayService {
 		}
 	}
 
+	@Override
 	protected String doExe(URI uri, String content) throws IOException, WechatApiException {
 		HttpPost post = new HttpPost(uri);
 		post.setHeader("Content-Type", "text/html; charset=UTF-8");
@@ -97,20 +110,39 @@ public class WechatPayV2service extends WechatPayService {
 		}
 	}
 
-	@Override
-	protected HttpClientBuilder createBuilder() {
-		return HttpClientBuilder.create();
-	}
 
-	protected String sign(SignType signType, String content) {
-		switch (signType) {
-		case MD5:
-			return SignUtil.md5(content).toUpperCase();
-		case HMAC_SHA256:
-			return SignUtil.HMACSHA256(content, apiV2Key).toUpperCase();
-		default:
-			throw new IllegalArgumentException("不支持的签名方式" + signType);
+	/**
+	 * 格式化时间
+	 *
+	 * @param date 时间
+	 * @return 格式化后
+	 */
+	public static String formatDate(Date date) {
+		if (null == date) {
+			return null;
+		}
+		synchronized (FORMAT) {
+			return FORMAT.format(date);
 		}
 	}
 
+	/**
+	 * 解析时间
+	 *
+	 * @param str 字符串
+	 * @return 时间
+	 */
+	public static Date parseDate(String str) {
+		if (null == str) {
+			return null;
+		}
+		synchronized (FORMAT) {
+			try {
+				return FORMAT.parse(str);
+			} catch (ParseException e) {
+				_Logger.info("格式错误,{}", str, e);
+				return null;
+			}
+		}
+	}
 }

@@ -5,8 +5,10 @@ import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -18,9 +20,11 @@ import org.apache.commons.codec.binary.Hex;
  */
 public class SignUtil {
 
+
+
 	/**
 	 * 通过get和is验证
-	 * 
+	 *
 	 * @param value      对象值
 	 * @param signType   签名方式
 	 * @param partnerKey 私钥
@@ -137,4 +141,20 @@ public class SignUtil {
 		}
 	}
 
+	/**
+	 * 获取随机字符串
+	 * @return 随机字符串
+	 */
+	public static String getNonceStr() {
+		return UUID.randomUUID().toString().toUpperCase().replaceAll("-","");
+	}
+
+	/**
+	 * 获取当前秒数
+	 *
+	 * @return 当前秒数
+	 */
+	public static long getTimestampSecond() {
+		return System.currentTimeMillis() / 1000;
+	}
 }

@@ -1,16 +1,23 @@
 package com.wechat.pay.service.combine;
 
 import java.io.IOException;
+import java.util.Map;
 
 import com.wechat.pay.contrib.apache.httpclient.exception.ParseException;
 import com.wechat.pay.contrib.apache.httpclient.exception.ValidationException;
 import com.wechat.pay.service.WechatApiException;
-import com.wechat.pay.service.WechatPayV3service;
+import com.wechat.pay.service.WechatPayV3Service;
 
-public class WechatPayV3CombineService extends WechatPayV3service {
+public class WechatPayV3CombineService extends WechatPayV3Service {
 
     public static String TRANSACTIONS_PATH = "/v3/combine-transactions/";
+    public WechatPayV3CombineService() {
+        super();
+    }
 
+    public WechatPayV3CombineService(int connectionSecond, int soSecond) {
+        super(connectionSecond, soSecond);
+    }
     /**
      * jsapi支付
      *
@@ -22,6 +29,17 @@ public class WechatPayV3CombineService extends WechatPayV3service {
     public CombineJsApiResponse jsApi(CombineJsApiRequest request) throws IOException, WechatApiException {
         request.setCombineMchid(merchantId);
         return exe(TRANSACTIONS_PATH + "jsapi", request, CombineJsApiResponse.class);
+    }
+
+    /**
+     * 生成JSAPI调起支付的表单
+     *
+     * @param appId    应用id
+     * @param prepayId 预支付id
+     * @return 表单
+     */
+    public Map<String, Object> genJsApiForm(String appId, String prepayId) {
+        return genJsApiForm(appId, getMerchantPrivateKey(), prepayId);
     }
 
     /**
