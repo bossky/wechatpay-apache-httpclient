@@ -6,40 +6,48 @@ package com.wechat.pay.service.refund;
  */
 public class RefundApplyAmount {
 
-    /**
-     * 退款金额
-     */
-    protected long refund;
-    /**
-     * 原订单金额
-     */
-    protected long total;
-    /**
-     * 符合ISO 4217标准的三位字母代码，目前只支持人民币：CNY。
-     */
-    protected String currency = "CNY";
+	/**
+	 * 退款金额
+	 */
+	protected long refund;
+	/**
+	 * 原订单金额
+	 */
+	protected long total;
+	/**
+	 * 符合ISO 4217标准的三位字母代码，目前只支持人民币：CNY。
+	 */
+	protected String currency = "CNY";
 
-    public long getRefund() {
-        return refund;
-    }
+	public RefundApplyAmount() {
+	}
 
-    public void setRefund(long refund) {
-        this.refund = refund;
-    }
+	public RefundApplyAmount(long refund, long total) {
+		this.refund = refund;
+		this.total = total;
+	}
 
-    public long getTotal() {
-        return total;
-    }
+	public long getRefund() {
+		return refund;
+	}
 
-    public void setTotal(long total) {
-        this.total = total;
-    }
+	public void setRefund(long refund) {
+		this.refund = refund;
+	}
 
-    public String getCurrency() {
-        return currency;
-    }
+	public long getTotal() {
+		return total;
+	}
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
+	public void setTotal(long total) {
+		this.total = total;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 }
