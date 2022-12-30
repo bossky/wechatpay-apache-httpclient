@@ -11,7 +11,6 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,6 @@ public class WechatPayV2Service extends WechatPayService {
 		MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 		MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 	}
-
 
 	public WechatPayV2Service() {
 		super();
@@ -109,7 +107,6 @@ public class WechatPayV2Service extends WechatPayService {
 			return result;
 		}
 	}
-
 
 	/**
 	 * 格式化时间
