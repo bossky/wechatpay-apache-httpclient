@@ -1,5 +1,7 @@
 package com.wechat.pay.service.bill;
 
+import com.wechat.pay.service.bill.enums.BillHashType;
+
 /**
  * @author daibo
  * @date 2023/1/5 16:55
@@ -31,7 +33,7 @@ public class BillFundFlowSubMerchantItem {
      * 枚举值：
      * SHA1：SHA1值
      */
-    protected String hashType;
+    protected BillHashType hashType;
     /**
      * 哈希值
      * <p>
@@ -69,11 +71,11 @@ public class BillFundFlowSubMerchantItem {
         this.encryptKey = encryptKey;
     }
 
-    public String getHashType() {
+    public BillHashType getHashType() {
         return hashType;
     }
 
-    public void setHashType(String hashType) {
+    public void setHashType(BillHashType hashType) {
         this.hashType = hashType;
     }
 

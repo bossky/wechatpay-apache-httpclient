@@ -1,5 +1,8 @@
 package com.wechat.pay.service.bill;
 
+import com.wechat.pay.service.bill.enums.BillAccountType;
+import com.wechat.pay.service.bill.enums.BillTarType;
+
 /**
  *
  */

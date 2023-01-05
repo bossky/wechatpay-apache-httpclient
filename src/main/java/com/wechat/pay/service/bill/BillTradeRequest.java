@@ -1,5 +1,8 @@
 package com.wechat.pay.service.bill;
 
+import com.wechat.pay.service.bill.enums.BillTarType;
+import com.wechat.pay.service.bill.enums.BillType;
+
 /**
  *
  */
@@ -24,13 +27,13 @@ public class BillTradeRequest {
      * SUCCESS：返回当日成功支付的订单（不含充值退款订单）
      * REFUND：返回当日退款订单（不含充值退款订单）
      */
-    protected String billType;
+    protected BillType billType;
     /**
      * 压缩类型 不填则默认是数据流
      * 枚举值：
      * GZIP：返回格式为.gzip的压缩包账单
      */
-    protected String tarType;
+    protected BillTarType tarType;
 
     public String getBillDate() {
         return billDate;
@@ -48,19 +51,19 @@ public class BillTradeRequest {
         this.subMchid = subMchid;
     }
 
-    public String getBillType() {
+    public BillType getBillType() {
         return billType;
     }
 
-    public void setBillType(String billType) {
+    public void setBillType(BillType billType) {
         this.billType = billType;
     }
 
-    public String getTarType() {
+    public BillTarType getTarType() {
         return tarType;
     }
 
-    public void setTarType(String tarType) {
+    public void setTarType(BillTarType tarType) {
         this.tarType = tarType;
     }
 }

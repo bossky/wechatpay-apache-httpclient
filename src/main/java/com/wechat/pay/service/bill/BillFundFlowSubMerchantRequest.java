@@ -1,5 +1,9 @@
 package com.wechat.pay.service.bill;
 
+import com.wechat.pay.service.bill.enums.BillAccountType;
+import com.wechat.pay.service.bill.enums.BillAlgorithm;
+import com.wechat.pay.service.bill.enums.BillTarType;
+
 /**
  * @author daibo
  * @date 2023/1/5 16:55

@@ -90,11 +90,11 @@ public class WechatPayV3BillService extends WechatPayV3Service {
         if (null != request.getSubMchid() && request.getSubMchid().length() > 0) {
             sb.append("&sub_mchid=").append(request.getSubMchid());
         }
-        if (null != request.getBillType() && request.getBillType().length() > 0) {
-            sb.append("&bill_type=").append(request.getBillType());
+        if (null != request.getBillType()) {
+            sb.append("&bill_type=").append(request.getBillType().name());
         }
-        if (null != request.getTarType() && request.getTarType().length() > 0) {
-            sb.append("&tar_type=").append(request.getTarType());
+        if (null != request.getTarType()) {
+            sb.append("&tar_type=").append(request.getTarType().name());
         }
         return exe(BILL_PATH + "tradebill" + sb, null, BillTradeResponse.class);
     }

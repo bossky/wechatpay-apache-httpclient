@@ -1,4 +1,4 @@
-package com.wechat.pay.service.bill;
+package com.wechat.pay.service.bill.enums;
 
 /**
  * @author daibo

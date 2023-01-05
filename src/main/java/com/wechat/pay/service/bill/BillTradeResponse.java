@@ -1,5 +1,8 @@
 package com.wechat.pay.service.bill;
 
+import com.wechat.pay.service.bill.enums.BillHashType;
+import com.wechat.pay.service.bill.enums.BillTarType;
+
 /**
  *
  */
@@ -11,7 +14,7 @@ public class BillTradeResponse {
      * 枚举值：
      * SHA1：SHA1值
      */
-    protected String hashType;
+    protected BillHashType hashType;
     /**
      * 哈希值
      * <p>
@@ -25,11 +28,11 @@ public class BillTradeResponse {
      */
     protected String downloadUrl;
 
-    public String getHashType() {
+    public BillHashType getHashType() {
         return hashType;
     }
 
-    public void setHashType(String hashType) {
+    public void setHashType(BillHashType hashType) {
         this.hashType = hashType;
     }
 
