@@ -1,7 +1,6 @@
 package com.wechat.pay.service.bill;
 
 import com.wechat.pay.service.bill.enums.BillHashType;
-import com.wechat.pay.service.bill.enums.BillTarType;
 
 /**
  *

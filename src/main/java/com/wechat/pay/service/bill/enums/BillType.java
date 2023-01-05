@@ -16,5 +16,5 @@ public enum BillType {
     /**
      * ：返回当日退款订单（不含充值退款订单）
      */
-    REFUND;
+    REFUND
 }
