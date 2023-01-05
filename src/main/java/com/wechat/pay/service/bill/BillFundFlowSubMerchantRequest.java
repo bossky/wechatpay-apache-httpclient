@@ -21,7 +21,7 @@ public class BillFundFlowSubMerchantRequest {
      * OPERATION：运营账户
      * FEES：手续费账户
      */
-    protected String accountType;
+    protected BillAccountType accountType;
     /**
      * 加密算法
      * <p>
@@ -29,13 +29,13 @@ public class BillFundFlowSubMerchantRequest {
      * AEAD_AES_256_GCM：AEAD_AES_256_GCM加密算法
      * SM4_GCM：SM4_GCM加密算法，密钥长度128bit
      */
-    protected String algorithm;
+    protected BillAlgorithm algorithm;
     /**
      * 压缩类型 不填则默认是数据流
      * 枚举值：
      * GZIP：返回格式为.gzip的压缩包账单
      */
-    protected String tarType;
+    protected BillTarType tarType;
 
     public String getSubMchid() {
         return subMchid;
@@ -53,27 +53,27 @@ public class BillFundFlowSubMerchantRequest {
         this.billDate = billDate;
     }
 
-    public String getAccountType() {
+    public BillAccountType getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+    public void setAccountType(BillAccountType accountType) {
         this.accountType = accountType;
     }
 
-    public String getAlgorithm() {
+    public BillAlgorithm getAlgorithm() {
         return algorithm;
     }
 
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(BillAlgorithm algorithm) {
         this.algorithm = algorithm;
     }
 
-    public String getTarType() {
+    public BillTarType getTarType() {
         return tarType;
     }
 
-    public void setTarType(String tarType) {
+    public void setTarType(BillTarType tarType) {
         this.tarType = tarType;
     }
 }

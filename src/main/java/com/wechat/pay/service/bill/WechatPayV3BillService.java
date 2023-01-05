@@ -98,11 +98,11 @@ public class WechatPayV3BillService extends WechatPayV3Service {
     public BillFundFlowResponse fundFlowBill(BillFundFlowRequest request) throws IOException, WechatApiException {
         StringBuilder sb = new StringBuilder();
         sb.append("?bill_date=").append(request.getBillDate());
-        if (null != request.getAccountType() && request.getAccountType().length() > 0) {
-            sb.append("&account_type=").append(request.getAccountType());
+        if (null != request.getAccountType()) {
+            sb.append("&account_type=").append(request.getAccountType().name());
         }
-        if (null != request.getTarType() && request.getTarType().length() > 0) {
-            sb.append("&tar_type=").append(request.getTarType());
+        if (null != request.getTarType()) {
+            sb.append("&tar_type=").append(request.getTarType().name());
         }
         return exe(BILL_PATH + "fundflowbill" + sb, null, BillFundFlowResponse.class);
     }
@@ -119,14 +119,14 @@ public class WechatPayV3BillService extends WechatPayV3Service {
         StringBuilder sb = new StringBuilder();
         sb.append("?bill_date=").append(request.getBillDate());
         sb.append("?sub_mchid=").append(request.getSubMchid());
-        if (null != request.getAccountType() && request.getAccountType().length() > 0) {
-            sb.append("&account_type=").append(request.getAccountType());
+        if (null != request.getAccountType()) {
+            sb.append("&account_type=").append(request.getAccountType().name());
         }
-        if (null != request.getAlgorithm() && request.getAlgorithm().length() > 0) {
-            sb.append("&algorithm=").append(request.getAccountType());
+        if (null != request.getAlgorithm()) {
+            sb.append("&algorithm=").append(request.getAccountType().name());
         }
-        if (null != request.getTarType() && request.getTarType().length() > 0) {
-            sb.append("&tar_type=").append(request.getTarType());
+        if (null != request.getTarType()) {
+            sb.append("&tar_type=").append(request.getTarType().name());
         }
         return exe(BILL_PATH + "sub-merchant-fundflowbill" + sb, null, BillFundFlowSubMerchantResponse.class);
     }
