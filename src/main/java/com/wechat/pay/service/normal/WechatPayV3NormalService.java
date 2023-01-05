@@ -11,15 +11,15 @@ import com.wechat.pay.service.WechatPayV3Service;
 /**
  * 微信V3普通商户
  */
-public class WechatPayNormalV3Service extends WechatPayV3Service {
+public class WechatPayV3NormalService extends WechatPayV3Service {
 
     public static String TRANSACTIONS_PATH = "/v3/pay/transactions/";
 
-    public WechatPayNormalV3Service() {
+    public WechatPayV3NormalService() {
         super();
     }
 
-    public WechatPayNormalV3Service(int connectionSecond, int soSecond) {
+    public WechatPayV3NormalService(int connectionSecond, int soSecond) {
         super(connectionSecond, soSecond);
     }
 

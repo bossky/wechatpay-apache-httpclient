@@ -7,6 +7,9 @@ import com.wechat.pay.contrib.apache.httpclient.exception.ValidationException;
 import com.wechat.pay.service.WechatApiException;
 import com.wechat.pay.service.WechatPayV3Service;
 
+/**
+ * 退款相关V3 同时支付服务商和普通商户
+ */
 public class WechatPayV3RefundService extends WechatPayV3Service {
 
 	public static String REFUND_PATH = "/v3/refund/domestic/";
@@ -49,7 +52,7 @@ public class WechatPayV3RefundService extends WechatPayV3Service {
 	 * @throws ParseException      解析错误
 	 */
 	public RefundCallBackResponse refundNotification(String wechatPaySerial, String nonce, String timestamp,
-			String signature, String body) throws ValidationException, ParseException {
+													 String signature, String body) throws ValidationException, ParseException {
 		return parse(wechatPaySerial, nonce, timestamp, signature, body, RefundCallBackResponse.class);
 	}
 

@@ -1,27 +1,21 @@
-package com.wechat.pay.service.partner;
+package com.wechat.pay.service.normal;
 
 /**
  * @author daibo
  * @date 2022/12/29 18:34
  */
-public class PartnerMicropayRequest {
+public class NormalMicropayRequest {
 
     /**
      * 服务商的APPID
      */
     protected String appid;
-    /**
-     * 子商户公众账号ID
-     */
-    protected String subAppid;
+
     /**
      * 商户号
      */
     protected String mchId;
-    /**
-     * 子商户号 服务商模式必传
-     */
-    protected String subMchId;
+
     /**
      * 设备号
      */
@@ -87,13 +81,6 @@ public class PartnerMicropayRequest {
         this.appid = appid;
     }
 
-    public String getSubAppid() {
-        return subAppid;
-    }
-
-    public void setSubAppid(String subAppid) {
-        this.subAppid = subAppid;
-    }
 
     public String getMchId() {
         return mchId;
@@ -103,13 +90,6 @@ public class PartnerMicropayRequest {
         this.mchId = mchId;
     }
 
-    public String getSubMchId() {
-        return subMchId;
-    }
-
-    public void setSubMchId(String subMchId) {
-        this.subMchId = subMchId;
-    }
 
     public String getDeviceInfo() {
         return deviceInfo;
