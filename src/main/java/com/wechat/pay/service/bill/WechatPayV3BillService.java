@@ -2,6 +2,7 @@ package com.wechat.pay.service.bill;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
@@ -143,6 +144,27 @@ public class WechatPayV3BillService extends WechatPayV3Service {
         return exe(BILL_PATH + "sub-merchant-fundflowbill" + sb, null, BillFundFlowSubMerchantResponse.class);
     }
 
+    /**
+     * 下载
+     *
+     * @param url 链接
+     * @param out 输出流
+     * @throws IOException IO异常
+     */
+    public void download(String url, OutputStream out) throws IOException {
+        try (CloseableHttpResponse response = getDownloadClient().execute(new HttpGet(URI.create(url)))) {
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() / 100 != 2) {
+                throw new IOException("状态码异常:" + status);
+            }
+            InputStream inputStream = response.getEntity().getContent();
+            byte[] bs = new byte[1024];
+            int l;
+            while ((l = inputStream.read(bs)) != -1) {
+                out.write(bs, 0, l);
+            }
+        }
+    }
 
     /**
      * 下载
@@ -160,6 +182,7 @@ public class WechatPayV3BillService extends WechatPayV3Service {
             consumer.accept(response.getEntity().getContent());
         }
     }
+
 
     /**
      * AEAD_AES_256_GCM 解析

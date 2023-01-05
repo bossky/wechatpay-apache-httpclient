@@ -1,5 +1,6 @@
 package com.wechat.pay.service.bill;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -30,6 +31,9 @@ public class BillFundFlowSubMerchantResponse {
     }
 
     public void setDownloadBillList(List<BillFundFlowSubMerchantItem> downloadBillList) {
+        if (null != downloadBillList) {
+            downloadBillList.sort(Comparator.comparingInt(BillFundFlowSubMerchantItem::getBillSequence));
+        }
         this.downloadBillList = downloadBillList;
     }
 }
