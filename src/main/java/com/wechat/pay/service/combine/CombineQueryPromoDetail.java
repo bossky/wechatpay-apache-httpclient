@@ -1,10 +1,10 @@
-package com.wechat.pay.service.partner;
+package com.wechat.pay.service.combine;
 
 import java.util.List;
 
-import com.wechat.pay.service.normal.NormalQueryPromoItem;
+import com.wechat.pay.service.partner.PartnerQueryPromoItem;
 
-public class PartnerQueryPromoDetail {
+public class CombineQueryPromoDetail {
 
 	/**
 	 * 券ID
@@ -57,7 +57,7 @@ public class PartnerQueryPromoDetail {
 	/***
 	 * 单品列表
 	 */
-	protected List<PartnerQueryPromoItem> goodsDetail;
+	protected List<CombineQueryPromoItem> goodsDetail;
 	public String getCouponId() {
 		return couponId;
 	}
@@ -138,11 +138,11 @@ public class PartnerQueryPromoDetail {
 		this.currency = currency;
 	}
 
-	public List<PartnerQueryPromoItem> getGoodsDetail() {
+	public List<CombineQueryPromoItem> getGoodsDetail() {
 		return goodsDetail;
 	}
 
-	public void setGoodsDetail(List<PartnerQueryPromoItem> goodsDetail) {
+	public void setGoodsDetail(List<CombineQueryPromoItem> goodsDetail) {
 		this.goodsDetail = goodsDetail;
 	}
 }

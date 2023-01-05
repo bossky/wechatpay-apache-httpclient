@@ -1,5 +1,7 @@
 package com.wechat.pay.service.normal;
 
+import java.util.List;
+
 public class NormalQueryPromoDetail {
 
 	/**
@@ -50,6 +52,8 @@ public class NormalQueryPromoDetail {
 	 * 优惠币种
 	 */
 	protected String currency;
+
+	protected List<NormalQueryPromoItem> goodsDetail;
 
 	public String getCouponId() {
 		return couponId;
@@ -129,5 +133,13 @@ public class NormalQueryPromoDetail {
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+
+	public List<NormalQueryPromoItem> getGoodsDetail() {
+		return goodsDetail;
+	}
+
+	public void setGoodsDetail(List<NormalQueryPromoItem> goodsDetail) {
+		this.goodsDetail = goodsDetail;
 	}
 }

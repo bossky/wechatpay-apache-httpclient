@@ -7,6 +7,8 @@ import com.wechat.pay.contrib.apache.httpclient.exception.ParseException;
 import com.wechat.pay.contrib.apache.httpclient.exception.ValidationException;
 import com.wechat.pay.service.WechatApiException;
 import com.wechat.pay.service.WechatPayV3Service;
+import com.wechat.pay.service.normal.NormalJsApiRequest;
+import com.wechat.pay.service.normal.NormalNativeResponse;
 
 /**
  * 微信V3合单
@@ -42,13 +44,70 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 	}
 
 	/**
-	 * 生成JSAPI调起支付的表单
+	 * app支付
+	 *
+	 * @param request 请求
+	 * @return 结果
+	 * @throws IOException        IO异常
+	 * @throws WechatApiException 微信API异常
+	 */
+	public CombineJsApiResponse app(CombineJsApiRequest request) throws IOException, WechatApiException {
+		request.setCombineMchid(merchantId);
+		request.getSubOrders().forEach(e -> {
+			if (null != e.getSubMchid() || e.getSubMchid().length() > 0) {
+				e.setMchid(merchantId);
+			}
+		});
+		return exe(TRANSACTIONS_PATH + "app", request, CombineJsApiResponse.class);
+	}
+
+
+	/**
+	 * h5支付(注意payer_client_ip必传)
+	 *
+	 * @param request 请求
+	 * @return 结果
+	 * @throws IOException        IO异常
+	 * @throws WechatApiException 微信API异常
+	 */
+	public CombineH5Response h5(CombineJsApiRequest request) throws IOException, WechatApiException {
+		request.setCombineMchid(merchantId);
+		request.getSubOrders().forEach(e -> {
+			if (null != e.getSubMchid() || e.getSubMchid().length() > 0) {
+				e.setMchid(merchantId);
+			}
+		});
+		return exe(TRANSACTIONS_PATH + "h5", request, CombineH5Response.class);
+	}
+
+	/**
+	 * native支付
+	 * <p>
+	 * 商户Native支付下单接口，微信后台系统返回链接参数code_url，商户后台系统将code_url值生成二维码图片，用户使用微信客户端扫码后发起支付。
+	 *
+	 * @param request 请求
+	 * @return 结果
+	 * @throws IOException        IO异常
+	 * @throws WechatApiException 微信API异常
+	 */
+	public CombineNativeResponse nativePay(CombineJsApiRequest request) throws IOException, WechatApiException {
+		request.setCombineMchid(merchantId);
+		request.getSubOrders().forEach(e -> {
+			if (null != e.getSubMchid() || e.getSubMchid().length() > 0) {
+				e.setMchid(merchantId);
+			}
+		});
+		return exe(TRANSACTIONS_PATH + "native", request, CombineNativeResponse.class);
+	}
+
+	/**
+	 * 生成调起支付的表单
 	 *
 	 * @param appId    应用id
 	 * @param prepayId 预支付id
 	 * @return 表单
 	 */
-	public Map<String, Object> genJsApiForm(String appId, String prepayId) {
+	public Map<String, Object> genApiForm(String appId, String prepayId) {
 		return genApiForm(appId, getMerchantPrivateKey(), prepayId);
 	}
 
@@ -72,6 +131,11 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 	 * @throws WechatApiException 微信API异常
 	 */
 	public void close(CombineCloseRequest request) throws IOException, WechatApiException {
+		request.getSubOrders().forEach(e -> {
+			if (null != e.getSubMchid() || e.getSubMchid().length() > 0) {
+				e.setMchid(merchantId);
+			}
+		});
 		exe(TRANSACTIONS_PATH + "out-trade-no/" + request.getCombineOutTradeNo() + "/close", request, null);
 	}
 

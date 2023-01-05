@@ -17,6 +17,10 @@ public class CombineQueryResponse {
      */
     protected String combineOutTradeNo;
     /**
+     * 场景信息
+     */
+    protected CombineQuerySceneInfo sceneInfo;
+    /**
      * 子单信息
      */
     protected List<CombineQuerySubOrder> subOrders;

@@ -80,7 +80,7 @@ public class WechatPayV3PartnerService extends WechatPayV3Service {
     }
 
     /**
-     * 生成JSAPI调起支付的表单
+     * 生成调起支付的表单
      *
      * @param appId    应用id
      * @param prepayId 预支付id

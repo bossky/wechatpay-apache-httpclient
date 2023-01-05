@@ -1,6 +1,8 @@
 package com.wechat.pay.service.combine;
 
 
+import java.util.List;
+
 public class CombineQuerySubOrder {
 
     /**
@@ -72,6 +74,10 @@ public class CombineQuerySubOrder {
      * 订单金额
      */
     protected CombineQueryAmount amount;
+    /**
+     * 优惠功能
+     */
+    protected List<CombineQueryPromoDetail> promotionDetail;
 
 
     public String getMchid() {
@@ -168,5 +174,13 @@ public class CombineQuerySubOrder {
 
     public void setAmount(CombineQueryAmount amount) {
         this.amount = amount;
+    }
+
+    public List<CombineQueryPromoDetail> getPromotionDetail() {
+        return promotionDetail;
+    }
+
+    public void setPromotionDetail(List<CombineQueryPromoDetail> promotionDetail) {
+        this.promotionDetail = promotionDetail;
     }
 }
