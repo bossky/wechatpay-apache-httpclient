@@ -3,8 +3,19 @@ package com.wechat.pay.service.bill;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.http.StatusLine;
 import org.apache.http.client.config.RequestConfig;
@@ -16,6 +27,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
+import com.wechat.pay.contrib.apache.httpclient.util.RsaCryptoUtil;
 import com.wechat.pay.service.WechatApiException;
 import com.wechat.pay.service.WechatPayV3Service;
 
@@ -146,6 +158,36 @@ public class WechatPayV3BillService extends WechatPayV3Service {
                 throw new IOException("状态码异常:" + status);
             }
             consumer.accept(response.getEntity().getContent());
+        }
+    }
+
+    /**
+     * AEAD_AES_256_GCM 解析
+     *
+     * @param encryptKey 加密账单文件使用的加密密钥。密钥用商户证书的公钥进行加密，然后进行Base64编码
+     * @param nonce      加密账单文件使用的随机字符串
+     * @param ciphertext 账单文件密文
+     * @return 解密后内容
+     */
+    public byte[] encryptAeadAes256Gcm(String encryptKey, String nonce, byte[] ciphertext) {
+//        步骤1 下载账单文件，得到账单文件密文ciphertext；
+//        步骤2 使用商户证书私钥解密从接口获取的加密密钥（变量名：encrypt_key）得到密钥明文key；
+//        步骤3 利用步骤一、二中得到的账单密文ciphertext，密钥key和接口返回的随机字符串nonce解密账单，得到账单明文。
+        try {
+            String aesKey = RsaCryptoUtil.decryptOAEP(encryptKey, getPrivateKeyObject());
+            byte[] associatedData = aesKey.getBytes(StandardCharsets.UTF_8);
+            SecretKeySpec key = new SecretKeySpec(aesKey.getBytes(StandardCharsets.UTF_8), "AES");
+            GCMParameterSpec spec = new GCMParameterSpec(128, nonce.getBytes(StandardCharsets.UTF_8));
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+            cipher.init(Cipher.DECRYPT_MODE, key, spec);
+            cipher.updateAAD(associatedData);
+            return cipher.doFinal(ciphertext);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new IllegalStateException(e);
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
+            throw new RuntimeException(e);
         }
     }
 
