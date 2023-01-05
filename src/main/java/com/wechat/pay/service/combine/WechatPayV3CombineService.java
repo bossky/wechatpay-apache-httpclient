@@ -8,6 +8,9 @@ import com.wechat.pay.contrib.apache.httpclient.exception.ValidationException;
 import com.wechat.pay.service.WechatApiException;
 import com.wechat.pay.service.WechatPayV3Service;
 
+/**
+ * 微信V3合单
+ */
 public class WechatPayV3CombineService extends WechatPayV3Service {
 
 	public static String TRANSACTIONS_PATH = "/v3/combine-transactions/";
@@ -46,7 +49,7 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 	 * @return 表单
 	 */
 	public Map<String, Object> genJsApiForm(String appId, String prepayId) {
-		return genJsApiForm(appId, getMerchantPrivateKey(), prepayId);
+		return genApiForm(appId, getMerchantPrivateKey(), prepayId);
 	}
 
 	/**

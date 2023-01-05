@@ -8,7 +8,7 @@ import com.wechat.pay.service.WechatApiException;
 import com.wechat.pay.service.WechatPayV2Service;
 
 /**
- *
+ * 微信V2服务商（主要付款码支付还不支付V3）
  */
 public class WechatPayV2PartnerService extends WechatPayV2Service {
 

@@ -1,28 +1,18 @@
-package com.wechat.pay.service.partner;
+package com.wechat.pay.service.normal;
 
+/**
+ *
+ */
+public class NormalJsApiRequest {
 
-public class PartnerJsApiRequest {
-
     /**
-     * 服务商应用ID
+     * 应用id
      */
-    protected String spAppid;
+    protected String appid;
     /**
-     * 服务商户号
+     * 直连商户号
      */
-    protected String spMchid;
-    /**
-     * 子商户应用ID
-     */
-    protected String subAppid;
-    /**
-     * 子商户号
-     */
-    protected String subMchid;
-    /**
-     * 商品描述
-     */
-    protected String description;
+    protected String mchid;
     /**
      * 商户订单号
      * <p>
@@ -57,64 +47,40 @@ public class PartnerJsApiRequest {
      */
     protected Boolean supportFapiao;
     /**
-     * 结算信息
+     * 订单金额
      */
-    protected PartnerJsApiSettleInfo settleInfo;
+    protected NormalJsApiAmount amount;
     /**
-     * 订单金额信息
+     * 支付者
      */
-    protected PartnerJsApiAmount amount;
-    /**
-     * 支付者信息
-     */
-    protected PartnerJsApiPayer payer;
+    protected NormalJsApiPayer payer;
     /**
      * 优惠功能
      */
-    protected PartnerJsApiPromoDetail detail;
+    protected NormalJsApiPromoDetail detail;
     /**
      * 场景信息
      */
-    protected PartnerJsApiSceneInfo sceneInfo;
+    protected NormalJsApiSceneInfo sceneInfo;
+    /**
+     * 结算信息
+     */
+    protected NormalJsApiSettleInfo settleInfo;
 
-    public String getSpAppid() {
-        return spAppid;
+    public String getAppid() {
+        return appid;
     }
 
-    public void setSpAppid(String spAppid) {
-        this.spAppid = spAppid;
+    public void setAppid(String appid) {
+        this.appid = appid;
     }
 
-    public String getSpMchid() {
-        return spMchid;
+    public String getMchid() {
+        return mchid;
     }
 
-    public void setSpMchid(String spMchid) {
-        this.spMchid = spMchid;
-    }
-
-    public String getSubAppid() {
-        return subAppid;
-    }
-
-    public void setSubAppid(String subAppid) {
-        this.subAppid = subAppid;
-    }
-
-    public String getSubMchid() {
-        return subMchid;
-    }
-
-    public void setSubMchid(String subMchid) {
-        this.subMchid = subMchid;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMchid(String mchid) {
+        this.mchid = mchid;
     }
 
     public String getOutTradeNo() {
@@ -157,7 +123,7 @@ public class PartnerJsApiRequest {
         this.goodsTag = goodsTag;
     }
 
-    public Boolean isSupportFapiao() {
+    public Boolean getSupportFapiao() {
         return supportFapiao;
     }
 
@@ -165,27 +131,43 @@ public class PartnerJsApiRequest {
         this.supportFapiao = supportFapiao;
     }
 
-    public PartnerJsApiSettleInfo getSettleInfo() {
-        return settleInfo;
-    }
-
-    public void setSettleInfo(PartnerJsApiSettleInfo settleInfo) {
-        this.settleInfo = settleInfo;
-    }
-
-    public PartnerJsApiAmount getAmount() {
+    public NormalJsApiAmount getAmount() {
         return amount;
     }
 
-    public void setAmount(PartnerJsApiAmount amount) {
+    public void setAmount(NormalJsApiAmount amount) {
         this.amount = amount;
     }
 
-    public PartnerJsApiPayer getPayer() {
+    public NormalJsApiPayer getPayer() {
         return payer;
     }
 
-    public void setPayer(PartnerJsApiPayer payer) {
+    public void setPayer(NormalJsApiPayer payer) {
         this.payer = payer;
+    }
+
+    public NormalJsApiPromoDetail getDetail() {
+        return detail;
+    }
+
+    public void setDetail(NormalJsApiPromoDetail detail) {
+        this.detail = detail;
+    }
+
+    public NormalJsApiSceneInfo getSceneInfo() {
+        return sceneInfo;
+    }
+
+    public void setSceneInfo(NormalJsApiSceneInfo sceneInfo) {
+        this.sceneInfo = sceneInfo;
+    }
+
+    public NormalJsApiSettleInfo getSettleInfo() {
+        return settleInfo;
+    }
+
+    public void setSettleInfo(NormalJsApiSettleInfo settleInfo) {
+        this.settleInfo = settleInfo;
     }
 }

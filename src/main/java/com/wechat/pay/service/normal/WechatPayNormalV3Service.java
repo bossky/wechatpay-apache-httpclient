@@ -1,5 +1,4 @@
-package com.wechat.pay.service.partner;
-
+package com.wechat.pay.service.normal;
 
 import java.io.IOException;
 import java.util.Map;
@@ -10,17 +9,17 @@ import com.wechat.pay.service.WechatApiException;
 import com.wechat.pay.service.WechatPayV3Service;
 
 /**
- * 微信V3服务商
+ * 微信V3普通商户
  */
-public class WechatPayV3PartnerService extends WechatPayV3Service {
+public class WechatPayNormalV3Service extends WechatPayV3Service {
 
-    public static String TRANSACTIONS_PATH = "/v3/pay/partner/transactions/";
+    public static String TRANSACTIONS_PATH = "/v3/pay/transactions/";
 
-    public WechatPayV3PartnerService() {
+    public WechatPayNormalV3Service() {
         super();
     }
 
-    public WechatPayV3PartnerService(int connectionSecond, int soSecond) {
+    public WechatPayNormalV3Service(int connectionSecond, int soSecond) {
         super(connectionSecond, soSecond);
     }
 
@@ -32,9 +31,9 @@ public class WechatPayV3PartnerService extends WechatPayV3Service {
      * @throws IOException        IO异常
      * @throws WechatApiException 微信API异常
      */
-    public PartnerJsApiResponse jsApi(PartnerJsApiRequest request) throws IOException, WechatApiException {
-        request.setSpMchid(merchantId);
-        return exe(TRANSACTIONS_PATH + "jsapi", request, PartnerJsApiResponse.class);
+    public NormalJsApiResponse jsApi(NormalJsApiRequest request) throws IOException, WechatApiException {
+        request.setMchid(merchantId);
+        return exe(TRANSACTIONS_PATH + "jsapi", request, NormalJsApiResponse.class);
     }
 
     /**
@@ -45,9 +44,9 @@ public class WechatPayV3PartnerService extends WechatPayV3Service {
      * @throws IOException        IO异常
      * @throws WechatApiException 微信API异常
      */
-    public PartnerJsApiResponse app(PartnerJsApiRequest request) throws IOException, WechatApiException {
-        request.setSpMchid(merchantId);
-        return exe(TRANSACTIONS_PATH + "app", request, PartnerJsApiResponse.class);
+    public NormalJsApiResponse app(NormalJsApiRequest request) throws IOException, WechatApiException {
+        request.setMchid(merchantId);
+        return exe(TRANSACTIONS_PATH + "app", request, NormalJsApiResponse.class);
     }
 
 
@@ -59,9 +58,9 @@ public class WechatPayV3PartnerService extends WechatPayV3Service {
      * @throws IOException        IO异常
      * @throws WechatApiException 微信API异常
      */
-    public PartnerH5Response h5(PartnerJsApiRequest request) throws IOException, WechatApiException {
-        request.setSpMchid(merchantId);
-        return exe(TRANSACTIONS_PATH + "h5", request, PartnerH5Response.class);
+    public NormalH5Response h5(NormalJsApiRequest request) throws IOException, WechatApiException {
+        request.setMchid(merchantId);
+        return exe(TRANSACTIONS_PATH + "h5", request, NormalH5Response.class);
     }
 
     /**
@@ -74,13 +73,14 @@ public class WechatPayV3PartnerService extends WechatPayV3Service {
      * @throws IOException        IO异常
      * @throws WechatApiException 微信API异常
      */
-    public PartnerNativeResponse nativePay(PartnerJsApiRequest request) throws IOException, WechatApiException {
-        request.setSpMchid(merchantId);
-        return exe(TRANSACTIONS_PATH + "native", request, PartnerNativeResponse.class);
+    public NormalNativeResponse nativePay(NormalJsApiRequest request) throws IOException, WechatApiException {
+        request.setMchid(merchantId);
+        return exe(TRANSACTIONS_PATH + "native", request, NormalNativeResponse.class);
     }
 
+
     /**
-     * 生成JSAPI调起支付的表单
+     * 生成调起支付的表单
      *
      * @param appId    应用id
      * @param prepayId 预支付id
@@ -90,44 +90,41 @@ public class WechatPayV3PartnerService extends WechatPayV3Service {
         return genApiForm(appId, getMerchantPrivateKey(), prepayId);
     }
 
+
     /**
      * 查询
      *
-     * @param subMchid      子商户号
      * @param transactionId 微信支付订单号
      * @return 查询结果
      * @throws IOException        IO异常
      * @throws WechatApiException 微信API异常
      */
-    public PartnerQueryResponse queryById(String subMchid, String transactionId) throws IOException, WechatApiException {
-        return exe(TRANSACTIONS_PATH + "id/" + transactionId + "?sp_mchid=" + merchantId + "&sub_mchid=" + subMchid, null, PartnerQueryResponse.class);
+    public NormalQueryResponse queryById(String transactionId) throws IOException, WechatApiException {
+        return exe(TRANSACTIONS_PATH + "id/" + transactionId + "?mchid=" + merchantId, null, NormalQueryResponse.class);
     }
 
     /**
      * 查询
      *
-     * @param subMchid   子商户号
      * @param outTradeNo 商户交易号
      * @return 查询结果
      * @throws IOException        IO异常
      * @throws WechatApiException 微信API异常
      */
-    public PartnerQueryResponse queryByTradeNo(String subMchid, String outTradeNo) throws IOException, WechatApiException {
-        return exe(TRANSACTIONS_PATH + "out-trade-no/" + outTradeNo + "?sp_mchid=" + merchantId + "&sub_mchid=" + subMchid, null, PartnerQueryResponse.class);
+    public NormalQueryResponse queryByTradeNo(String outTradeNo) throws IOException, WechatApiException {
+        return exe(TRANSACTIONS_PATH + "out-trade-no/" + outTradeNo + "?mchid=" + merchantId, null, NormalQueryResponse.class);
     }
 
     /**
      * 关闭订单
      *
-     * @param subMchid   子商户号
      * @param outTradeNo 商户交易号
      * @throws IOException        IO异常
      * @throws WechatApiException 微信API异常
      */
-    public void close(String subMchid, String outTradeNo) throws IOException, WechatApiException {
-        PartnerCloseRequest request = new PartnerCloseRequest();
-        request.setSpMchid(merchantId);
-        request.setSubMchid(subMchid);
+    public void close(String outTradeNo) throws IOException, WechatApiException {
+        NormalCloseRequest request = new NormalCloseRequest();
+        request.setMchid(merchantId);
         exe(TRANSACTIONS_PATH + "out-trade-no/" + outTradeNo + "/close", request, null);
     }
 
@@ -143,7 +140,7 @@ public class WechatPayV3PartnerService extends WechatPayV3Service {
      * @throws ValidationException 验证错误
      * @throws ParseException      解析错误
      */
-    public PartnerQueryResponse payNotification(String wechatPaySerial, String nonce, String timestamp, String signature, String body) throws ValidationException, ParseException {
-        return parse(wechatPaySerial, nonce, timestamp, signature, body, PartnerQueryResponse.class);
+    public NormalQueryResponse payNotification(String wechatPaySerial, String nonce, String timestamp, String signature, String body) throws ValidationException, ParseException {
+        return parse(wechatPaySerial, nonce, timestamp, signature, body, NormalQueryResponse.class);
     }
 }

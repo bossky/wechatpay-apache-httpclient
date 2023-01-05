@@ -12,10 +12,7 @@ public class PartnerCloseRequest {
      * 子商户号
      */
     protected String subMchid;
-    /**
-     * 商户订单号
-     */
-    protected String outTradeNo;
+
 
     public String getSpMchid() {
         return spMchid;
@@ -33,11 +30,4 @@ public class PartnerCloseRequest {
         this.subMchid = subMchid;
     }
 
-    public String getOutTradeNo() {
-        return outTradeNo;
-    }
-
-    public void setOutTradeNo(String outTradeNo) {
-        this.outTradeNo = outTradeNo;
-    }
 }

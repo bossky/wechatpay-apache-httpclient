@@ -1,26 +1,18 @@
-package com.wechat.pay.service.partner;
+package com.wechat.pay.service.normal;
 
 
 import java.util.List;
 
-public class PartnerQueryResponse {
+public class NormalQueryResponse {
 
     /**
-     * 服务商应用ID
+     * 应用ID
      */
-    protected String spAppid;
+    protected String appid;
     /**
-     * 服务商户号
+     * 直连商户
      */
-    protected String spMchid;
-    /**
-     * 子商户应用ID
-     */
-    protected String subAppid;
-    /**
-     * 子商户号
-     */
-    protected String subMchid;
+    protected String mchid;
     /**
      * 商户订单号
      * <p>
@@ -80,49 +72,34 @@ public class PartnerQueryResponse {
     /**
      * 支付者
      */
-    protected PartnerJsApiPayer payer;
+    protected NormalJsApiPayer payer;
     /**
      * 订单金额
      */
-    protected PartnerQueryAmount amount;
+    protected NormalQueryAmount amount;
     /**
      * 场景信息
      */
-    protected PartnerQuerySceneInfo sceneInfo;
+    protected NormalQuerySceneInfo sceneInfo;
     /**
      * 优惠功能
      */
-    protected List<PartnerQueryPromoDetail> promotionDetail;
-    public String getSpAppid() {
-        return spAppid;
+    protected List<NormalQueryPromoDetail> promotionDetail;
+
+    public String getAppid() {
+        return appid;
     }
 
-    public void setSpAppid(String spAppid) {
-        this.spAppid = spAppid;
+    public void setAppid(String appid) {
+        this.appid = appid;
     }
 
-    public String getSpMchid() {
-        return spMchid;
+    public String getMchid() {
+        return mchid;
     }
 
-    public void setSpMchid(String spMchid) {
-        this.spMchid = spMchid;
-    }
-
-    public String getSubAppid() {
-        return subAppid;
-    }
-
-    public void setSubAppid(String subAppid) {
-        this.subAppid = subAppid;
-    }
-
-    public String getSubMchid() {
-        return subMchid;
-    }
-
-    public void setSubMchid(String subMchid) {
-        this.subMchid = subMchid;
+    public void setMchid(String mchid) {
+        this.mchid = mchid;
     }
 
     public String getOutTradeNo() {
@@ -189,35 +166,36 @@ public class PartnerQueryResponse {
         this.successTime = successTime;
     }
 
-    public PartnerJsApiPayer getPayer() {
+    public NormalJsApiPayer getPayer() {
         return payer;
     }
 
-    public void setPayer(PartnerJsApiPayer payer) {
+    public void setPayer(NormalJsApiPayer payer) {
         this.payer = payer;
     }
 
-    public PartnerQueryAmount getAmount() {
+    public NormalQueryAmount getAmount() {
         return amount;
     }
 
-    public void setAmount(PartnerQueryAmount amount) {
+    public void setAmount(NormalQueryAmount amount) {
         this.amount = amount;
     }
 
-    public PartnerQuerySceneInfo getSceneInfo() {
+    public NormalQuerySceneInfo getSceneInfo() {
         return sceneInfo;
     }
 
-    public void setSceneInfo(PartnerQuerySceneInfo sceneInfo) {
+    public void setSceneInfo(NormalQuerySceneInfo sceneInfo) {
         this.sceneInfo = sceneInfo;
     }
 
-    public List<PartnerQueryPromoDetail> getPromotionDetail() {
+    public List<NormalQueryPromoDetail> getPromotionDetail() {
         return promotionDetail;
     }
 
-    public void setPromotionDetail(List<PartnerQueryPromoDetail> promotionDetail) {
+    public void setPromotionDetail(List<NormalQueryPromoDetail> promotionDetail) {
         this.promotionDetail = promotionDetail;
     }
+
 }

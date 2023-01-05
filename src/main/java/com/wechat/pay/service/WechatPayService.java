@@ -203,14 +203,14 @@ public abstract class WechatPayService {
     protected abstract String doExe(URI uri, String content) throws IOException, WechatApiException;
 
     /**
-     * 生成JSAPI调起支付的表单
+     * 生成调起支付的表单
      *
      * @param appId    应用id
      * @param key      密钥
      * @param prepayId 预支付id
      * @return 表单
      */
-    public static Map<String, Object> genJsApiForm(String appId, String key, String prepayId) {
+    public static Map<String, Object> genApiForm(String appId, String key, String prepayId) {
         SignType signType = SignType.MD5;
         TreeMap<String, Object> form = new TreeMap<>();
         // 服务商申请的公众号或移动应用appid。
