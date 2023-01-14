@@ -7,8 +7,6 @@ import com.wechat.pay.contrib.apache.httpclient.exception.ParseException;
 import com.wechat.pay.contrib.apache.httpclient.exception.ValidationException;
 import com.wechat.pay.service.WechatApiException;
 import com.wechat.pay.service.WechatPayV3Service;
-import com.wechat.pay.service.normal.NormalJsApiRequest;
-import com.wechat.pay.service.normal.NormalNativeResponse;
 
 /**
  * 微信V3合单
@@ -60,7 +58,6 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 		});
 		return exe(TRANSACTIONS_PATH + "app", request, CombineJsApiResponse.class);
 	}
-
 
 	/**
 	 * h5支付(注意payer_client_ip必传)
