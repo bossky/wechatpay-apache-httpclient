@@ -2,7 +2,6 @@ package com.wechat.pay.service.partner;
 
 import java.util.List;
 
-import com.wechat.pay.service.normal.NormalQueryPromoItem;
 
 public class PartnerQueryPromoDetail {
 

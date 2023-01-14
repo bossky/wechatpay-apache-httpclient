@@ -2,8 +2,6 @@ package com.wechat.pay.service.combine;
 
 import java.util.List;
 
-import com.wechat.pay.service.partner.PartnerQueryPromoItem;
-
 public class CombineQueryPromoDetail {
 
 	/**
@@ -25,10 +23,9 @@ public class CombineQueryPromoDetail {
 	protected String scope;
 
 	/**
-	 * 优惠类型	CASH：充值型代金券
+	 * 优惠类型 CASH：充值型代金券
 	 */
 	protected String type;
-
 
 	/**
 	 * 优惠券面额
@@ -58,6 +55,7 @@ public class CombineQueryPromoDetail {
 	 * 单品列表
 	 */
 	protected List<CombineQueryPromoItem> goodsDetail;
+
 	public String getCouponId() {
 		return couponId;
 	}
