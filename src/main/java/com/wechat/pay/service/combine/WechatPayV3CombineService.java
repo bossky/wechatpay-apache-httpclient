@@ -34,7 +34,7 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 	public CombineJsApiResponse jsApi(CombineJsApiRequest request) throws IOException, WechatApiException {
 		request.setCombineMchid(merchantId);
 		request.getSubOrders().forEach(e -> {
-			if (null != e.getSubMchid() || e.getSubMchid().length() > 0) {
+			if (null != e.getSubMchid() && e.getSubMchid().length() > 0) {
 				e.setMchid(merchantId);
 			}
 		});
@@ -52,7 +52,7 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 	public CombineJsApiResponse app(CombineJsApiRequest request) throws IOException, WechatApiException {
 		request.setCombineMchid(merchantId);
 		request.getSubOrders().forEach(e -> {
-			if (null != e.getSubMchid() || e.getSubMchid().length() > 0) {
+			if (null != e.getSubMchid() && e.getSubMchid().length() > 0) {
 				e.setMchid(merchantId);
 			}
 		});
@@ -70,7 +70,7 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 	public CombineH5Response h5(CombineJsApiRequest request) throws IOException, WechatApiException {
 		request.setCombineMchid(merchantId);
 		request.getSubOrders().forEach(e -> {
-			if (null != e.getSubMchid() || e.getSubMchid().length() > 0) {
+			if (null != e.getSubMchid() && e.getSubMchid().length() > 0) {
 				e.setMchid(merchantId);
 			}
 		});
@@ -90,7 +90,7 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 	public CombineNativeResponse nativePay(CombineJsApiRequest request) throws IOException, WechatApiException {
 		request.setCombineMchid(merchantId);
 		request.getSubOrders().forEach(e -> {
-			if (null != e.getSubMchid() || e.getSubMchid().length() > 0) {
+			if (null != e.getSubMchid() && e.getSubMchid().length() > 0) {
 				e.setMchid(merchantId);
 			}
 		});
@@ -129,7 +129,7 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 	 */
 	public void close(CombineCloseRequest request) throws IOException, WechatApiException {
 		request.getSubOrders().forEach(e -> {
-			if (null != e.getSubMchid() || e.getSubMchid().length() > 0) {
+			if (null != e.getSubMchid() && e.getSubMchid().length() > 0) {
 				e.setMchid(merchantId);
 			}
 		});
