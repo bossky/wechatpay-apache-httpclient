@@ -105,7 +105,7 @@ public class WechatPayV3CombineService extends WechatPayV3Service {
 	 * @return 表单
 	 */
 	public Map<String, Object> genApiForm(String appId, String prepayId) {
-		return genApiForm(appId, getMerchantPrivateKey(), prepayId);
+		return genApiForm(appId, getPrivateKeyObject(), prepayId);
 	}
 
 	/**

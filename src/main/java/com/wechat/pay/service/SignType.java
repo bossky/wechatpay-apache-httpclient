@@ -16,7 +16,11 @@ public enum SignType {
 	/**
 	 * MD5
 	 */
-	MD5("MD5");
+	MD5("MD5"),
+	/**
+	 * RSA
+	 */
+	RSA("RSA");
 	/**
 	 * 名称
 	 */

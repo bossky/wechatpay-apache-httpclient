@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
@@ -36,6 +37,7 @@ public class WechatPayV2Service extends WechatPayService {
 		MAPPER.setDateFormat(FORMAT);
 		MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 		MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 
 	public WechatPayV2Service() {

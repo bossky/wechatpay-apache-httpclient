@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.PrivateKey;
+import java.security.Signature;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -12,14 +14,14 @@ import java.util.UUID;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+
 
 /**
  *
  */
 public class SignUtil {
-
-
 
 	/**
 	 * 通过get和is验证
@@ -140,12 +142,25 @@ public class SignUtil {
 		}
 	}
 
+	public static String rsa(String content, PrivateKey partnerKey) {
+		try {
+			byte[] data = content.getBytes();
+			Signature signature = Signature.getInstance("SHA256withRSA");// 这个根据需求填充SHA1WithRSA或SHA256WithRSA
+			signature.initSign(partnerKey);
+			signature.update(data);
+			return Base64.encodeBase64String(signature.sign());
+		} catch (Throwable e) {
+			throw new RuntimeException("签名异常", e);
+		}
+	}
+
 	/**
 	 * 获取随机字符串
+	 * 
 	 * @return 随机字符串
 	 */
 	public static String getNonceStr() {
-		return UUID.randomUUID().toString().toUpperCase().replaceAll("-","");
+		return UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
 	}
 
 	/**
